@@ -1,0 +1,9 @@
+image:
+  name: localhost:5000/poc-sealed-secrets
+  tag: latest
+volume:
+  secret:
+    name: poc-sealed-secrets
+    path: /etc/config/secret
+secret:
+  name: poc-sealed-secrets

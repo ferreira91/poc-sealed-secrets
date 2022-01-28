@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+        - image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+          name: {{ .Chart.Name }}
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: {{ .Values.volume.secret.name }}
+              mountPath: {{ .Values.volume.secret.path }}
+              readOnly: true
+      volumes:
+        - name: {{ .Values.volume.secret.name }}
+          secret:
+            secretName: {{ .Values.secret.name }}
