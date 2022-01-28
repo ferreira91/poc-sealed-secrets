@@ -24,7 +24,7 @@ docker-push: docker-tag
 download-controller-kubeseal:
 	wget https://github.com/bitnami-labs/sealed-secrets/releases/download/$(SEALED_SECRETS_VERSION)/controller.yaml -P tools/
 install-controller-kubeseal: download-controller-kubeseal
-	 kubectl apply -f controller.yaml
+	 kubectl apply -f tools/controller.yaml
 create-secrets-kubeseal:
 	kubeseal --format=yaml < tools/basesecret.yaml > k8s/charts/templates/secret.yaml
 
